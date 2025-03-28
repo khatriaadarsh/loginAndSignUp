@@ -7,9 +7,9 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import SignUp from './SignUp';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-const SignIn = () => {
+const SignIn = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   return (
@@ -38,9 +38,21 @@ const SignIn = () => {
           <Pressable style={styles.signinBtn}>
             <Text style={styles.signinBtnText}>Sign In</Text>
           </Pressable>
-          <Pressable style={styles.signUpLink}>
+          <Pressable
+            style={styles.signUpLink}
+            onPress={() => navigation.navigate('SignUp')}>
             <Text style={styles.signUpLinkText}>Need an account? SignUp</Text>
           </Pressable>
+        </View>
+        <View style={styles.IconsView}>
+          <Icon name="google" size={40} color="black" />
+          <Icon name="facebook" size={40} color="blue" />
+          <Icon
+            name="linkedin"
+            size={40}
+            color="white"
+            style={{backgroundColor: 'blue', padding: 6, borderRadius: 5}}
+          />
         </View>
       </View>
     </View>
@@ -61,6 +73,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: 'bold',
+    color: 'white',
   },
   inputTextView: {
     gap: 30,
@@ -68,10 +81,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    borderWidth: 0.5,
+    backgroundColor: 'white',
+    borderColor: 'black',
     width: '80%',
-    borderRadius: 8,
-    paddingHorizontal: 10,
+    borderRadius: 10,
+    padding: 10,
   },
   forgetLink: {
     paddingLeft: '54%',
@@ -98,5 +112,11 @@ const styles = StyleSheet.create({
   },
   signUpLinkText: {
     fontSize: 18,
+  },
+  IconsView: {
+    flexDirection: 'row',
+    gap: 20,
+    marginTop: 5,
+    alignItems: 'center',
   },
 });
