@@ -9,7 +9,7 @@ import {
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const SignUp = () => {
+const SignUp = ({navigation}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -47,7 +47,9 @@ const SignUp = () => {
           onChange={setPassword}
           secureTextEntry
         />
-        <Pressable style={styles.signinBtn}>
+        <Pressable
+          style={styles.signinBtn}
+          onPress={() => navigation.navigate('APIIntegration')}>
           <Text style={styles.signinBtnText}>Sign Up</Text>
         </Pressable>
         <Text style={{fontSize: 24, fontWeight: 'bold'}}>OR</Text>

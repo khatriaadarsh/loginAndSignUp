@@ -3,7 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './src/Screens/Home';
 import SignIn from './src/Screens/SignIn';
 import SignUp from './src/Screens/SignUp';
-import {HeaderBackButton} from '@react-navigation/elements';
+import APIIntegration from './src/Screens/APIIntegration';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +24,11 @@ const StackNaigation = () => {
         name="SignUp"
         options={{headerShown: false}}
         component={SignUp}
+      />
+      <Stack.Screen
+        name="APIIntegration"
+        options={{headerShown: false}}
+        component={APIIntegration}
       />
     </Stack.Navigator>
   );

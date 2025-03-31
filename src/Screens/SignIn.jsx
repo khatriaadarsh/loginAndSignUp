@@ -35,7 +35,9 @@ const SignIn = ({navigation}) => {
           <Text style={styles.forgetLinkText}>Forget Password?</Text>
         </Pressable>
         <View style={styles.btnsView}>
-          <Pressable style={styles.signinBtn}>
+          <Pressable
+            style={styles.signinBtn}
+            onPress={() => navigation.navigate('APIIntegration')}>
             <Text style={styles.signinBtnText}>Sign In</Text>
           </Pressable>
           <Pressable
