@@ -4,6 +4,7 @@ import Home from './src/Screens/Home';
 import SignIn from './src/Screens/SignIn';
 import SignUp from './src/Screens/SignUp';
 import APIIntegration from './src/Screens/APIIntegration';
+import TicTacToe from './src/TicTacToe';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,11 @@ const StackNaigation = () => {
         name="APIIntegration"
         options={{headerShown: false}}
         component={APIIntegration}
+      />
+      <Stack.Screen
+        name="TicTacToe"
+        options={{headerShown: false}}
+        component={TicTacToe}
       />
     </Stack.Navigator>
   );
