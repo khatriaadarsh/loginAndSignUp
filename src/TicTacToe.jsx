@@ -1,126 +1,164 @@
 import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 
-const Temp = () => {
+const TicTacToeGame = () => {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isXNext, setIsXNext] = useState(true);
-  //  Handle player moves
+
   const handlePress = index => {
-    if (board[index] !== calculateWinner(board)) return;
+    // Prevent overwriting cells and ignore clicks if game is won
+    if (board[index] || calculateWinner(board)) return;
 
-    // Create a copy of the board (Immutable principle
     const newBoard = [...board];
-
-    // Mark the square with X or O based on the current turn
     newBoard[index] = isXNext ? 'X' : 'O';
-
-    // Update state with new board state and toggle the turn
     setBoard(newBoard);
     setIsXNext(!isXNext);
 
-    // Check for winner
     const winner = calculateWinner(newBoard);
     if (winner) {
-      Alert.alert(`Player ${winner} wins!`);
+      Alert.alert('Game Over', `Player ${winner} wins!`);
     } else if (!newBoard.includes(null)) {
-      Alert.alert('It is a draw!');
+      Alert.alert('Game Over', "It's a draw!");
     }
   };
 
-  // Calculate the winner
-  const calculateWinner = square => {
+  const calculateWinner = squares => {
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
-      [6, 7, 8],
+      [6, 7, 8], // rows
       [0, 3, 6],
       [1, 4, 7],
-      [2, 5, 8],
+      [2, 5, 8], // columns
       [0, 4, 8],
-      [2, 4, 6],
+      [2, 4, 6], // diagonals
     ];
+
     for (let [a, b, c] of lines) {
       if (
-        square[a] &&
-        square[a] === square[b] &&
-        square[a] &&
-        square[a] === square[c]
+        squares[a] &&
+        squares[a] === squares[b] &&
+        squares[a] === squares[c]
       ) {
-        return square[a];
+        return squares[a];
       }
     }
     return null;
   };
 
-  // Reset the game
   const resetGame = () => {
     setBoard(Array(9).fill(null));
     setIsXNext(true);
   };
 
+  const winner = calculateWinner(board);
+  const status = winner
+    ? `Winner: Player ${winner}`
+    : !board.includes(null)
+    ? 'Game Draw!'
+    : `Next Player: ${isXNext ? 'X' : 'O'}`;
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tic Tac Toe</Text>
-      <Text style={styles.title}>
-        {isXNext ? `Player X's turns` : `Player O's turns`}
-      </Text>
+      <Text style={styles.header}>Tic Tac Toe</Text>
+      <Text style={styles.status}>{status}</Text>
+
       <View style={styles.board}>
         {board.map((cell, index) => (
           <Pressable
             key={index}
+            style={[
+              styles.cell,
+              cell === 'X' ? styles.xCell : cell === 'O' ? styles.oCell : null,
+            ]}
             onPress={() => handlePress(index)}
-            style={styles.cell}>
+            disabled={!!cell || !!winner}>
             <Text style={styles.cellText}>{cell}</Text>
           </Pressable>
         ))}
       </View>
-      <Pressable onPress={resetGame} style={styles.resetButton}>
+
+      <Pressable
+        style={({pressed}) => [
+          styles.resetButton,
+          pressed && styles.buttonPressed,
+        ]}
+        onPress={resetGame}>
         <Text style={styles.resetText}>Reset Game</Text>
       </Pressable>
     </View>
   );
 };
 
-export default Temp;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f8f9fa',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
+  header: {
+    fontSize: 32,
     fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 10,
+  },
+  status: {
+    fontSize: 20,
+    color: '#555',
+    marginBottom: 30,
+    fontWeight: '600',
   },
   board: {
-    width: 300, // Fixed board size
+    width: 300,
     height: 300,
-    flexDirection: 'row', // Arrange cells in rows
-    flexWrap: 'wrap', // Allow wrapping to next row
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   cell: {
-    width: '33.33%',
-    height: '33.33%',
+    width: '33.333%',
+    height: '33.333%',
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: '#e0e0e0',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+  },
+  xCell: {
+    backgroundColor: '#f0f7ff',
+  },
+  oCell: {
+    backgroundColor: '#fff0f0',
   },
   cellText: {
-    fontSize: 40,
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: '#333',
   },
   resetButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: '#333',
-    borderRadius: 5,
+    marginTop: 30,
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    backgroundColor: '#4285f4',
+    borderRadius: 8,
+  },
+  buttonPressed: {
+    opacity: 0.8,
+    transform: [{scale: 0.98}],
   },
   resetText: {
-    color: '#fff',
+    color: 'white',
     fontSize: 18,
+    fontWeight: '600',
   },
 });
+
+export default TicTacToeGame;

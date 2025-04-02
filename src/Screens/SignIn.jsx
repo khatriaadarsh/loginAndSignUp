@@ -1,10 +1,12 @@
 import {
   Pressable,
-  StatusBar,
   StyleSheet,
   Text,
   TextInput,
   View,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -12,113 +14,200 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const SignIn = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sign In</Text>
-      <View style={styles.inputTextView}>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChange={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={password}
-          onChange={setPassword}
-          secureTextEntry
-        />
-        <Pressable style={styles.forgetLink}>
-          <Text style={styles.forgetLinkText}>Forget Password?</Text>
-        </Pressable>
-        <View style={styles.btnsView}>
-          <Pressable
-            style={styles.signinBtn}
-            onPress={() => navigation.navigate('APIIntegration')}>
-            <Text style={styles.signinBtnText}>Sign In</Text>
-          </Pressable>
-          <Pressable
-            style={styles.signUpLink}
-            onPress={() => navigation.navigate('SignUp')}>
-            <Text style={styles.signUpLinkText}>Need an account? SignUp</Text>
-          </Pressable>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.title}>Welcome Back</Text>
+          <Text style={styles.subtitle}>Sign in to continue</Text>
         </View>
-        <View style={styles.IconsView}>
-          <Icon name="google" size={40} color="black" />
-          <Icon name="facebook" size={40} color="blue" />
-          <Icon
-            name="linkedin"
-            size={40}
-            color="white"
-            style={{backgroundColor: 'blue', padding: 6, borderRadius: 5}}
+
+        {/* Form */}
+        <View style={styles.formContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email Address"
+            placeholderTextColor="#999"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
           />
+
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#999"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+
+          <Pressable style={styles.forgotPassword}>
+            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+          </Pressable>
+
+          <Pressable
+            style={({pressed}) => [
+              styles.signInButton,
+              pressed && styles.buttonPressed,
+            ]}
+            onPress={() => navigation.navigate('APIIntegration')}>
+            <Text style={styles.signInButtonText}>Sign In</Text>
+          </Pressable>
         </View>
-      </View>
-    </View>
+
+        {/* Divider */}
+        <View style={styles.dividerContainer}>
+          <View style={styles.dividerLine} />
+          <Text style={styles.dividerText}>or continue with</Text>
+          <View style={styles.dividerLine} />
+        </View>
+
+        {/* Social Icons */}
+        <View style={styles.socialIconsContainer}>
+          <Pressable style={styles.socialIcon}>
+            <Icon name="google" size={24} color="#DB4437" />
+          </Pressable>
+          <Pressable style={styles.socialIcon}>
+            <Icon name="facebook" size={24} color="#4267B2" />
+          </Pressable>
+          <Pressable style={styles.socialIcon}>
+            <Icon name="linkedin" size={24} color="#0077B5" />
+          </Pressable>
+        </View>
+
+        {/* Sign Up Link */}
+        <View style={styles.signUpContainer}>
+          <Text style={styles.signUpText}>Don't have an account? </Text>
+          <Pressable onPress={() => navigation.navigate('SignUp')}>
+            <Text style={styles.signUpLink}>Sign Up</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 export default SignIn;
 
 const styles = StyleSheet.create({
+  // Main containers
   container: {
-    backgroundColor: 'gray',
-    width: '100%',
-    height: '100%',
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    padding: 24,
     justifyContent: 'center',
+  },
+
+  // Header
+  header: {
+    marginBottom: 40,
     alignItems: 'center',
-    gap: '15%',
   },
   title: {
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: 'white',
+    color: '#333',
+    marginBottom: 8,
   },
-  inputTextView: {
-    gap: 30,
-    width: '100%',
-    alignItems: 'center',
+  subtitle: {
+    fontSize: 16,
+    color: '#666',
+  },
+
+  // Form
+  formContainer: {
+    marginBottom: 24,
   },
   input: {
-    backgroundColor: 'white',
-    borderColor: 'black',
-    width: '80%',
-    borderRadius: 10,
-    padding: 10,
+    backgroundColor: '#F5F5F5',
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 16,
+    fontSize: 16,
+    color: '#333',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
   },
-  forgetLink: {
-    paddingLeft: '54%',
+  forgotPassword: {
+    alignSelf: 'flex-end',
+    marginBottom: 24,
   },
-  forgetLinkText: {
-    textDecorationLine: 'underline',
+  forgotPasswordText: {
+    color: '#4285F4',
+    fontSize: 14,
   },
-  btnsView: {
-    gap: 10,
-    width: '100%',
+  signInButton: {
+    backgroundColor: '#4285F4',
+    borderRadius: 8,
+    padding: 16,
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  signinBtn: {
-    backgroundColor: 'black',
-    padding: 13,
-    borderRadius: 5,
-    width: '50%',
-    alignItems: 'center',
+  buttonPressed: {
+    opacity: 0.8,
   },
-  signinBtnText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: '700',
+  signInButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
   },
-  signUpLinkText: {
-    fontSize: 18,
-  },
-  IconsView: {
+
+  // Divider
+  dividerContainer: {
     flexDirection: 'row',
-    gap: 20,
-    marginTop: 5,
     alignItems: 'center',
+    marginVertical: 24,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#E0E0E0',
+  },
+  dividerText: {
+    marginHorizontal: 10,
+    color: '#999',
+    fontSize: 14,
+  },
+
+  // Social Icons
+  socialIconsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 32,
+    gap: 16,
+  },
+  socialIcon: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  // Sign Up
+  signUpContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  signUpText: {
+    color: '#666',
+    fontSize: 14,
+  },
+  signUpLink: {
+    color: '#4285F4',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });
